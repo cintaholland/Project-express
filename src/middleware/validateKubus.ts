@@ -3,13 +3,12 @@ import Joi from "joi"
 
 /** create validation schema */
 let schema = Joi.object({
-    p: Joi.number().required().min(1), 
-    l: Joi.number().required().min(1),
-    t: Joi.number().required().min(1)
+    s: Joi.number().required().min(1)
+  
 })
 
 /** create validation function */
-let validateCube = (request:Request, response:Response, next:NextFunction) => {
+let validateKubus = (request:Request, response:Response, next:NextFunction) => {
     let {error} = schema.validate (request.body)
     if(error){
         /** status 400 is bad request */
@@ -20,4 +19,4 @@ let validateCube = (request:Request, response:Response, next:NextFunction) => {
     next()
 }
 
-export {validateCube}
+export {validateKubus}
