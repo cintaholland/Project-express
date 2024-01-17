@@ -3,8 +3,8 @@ import Joi from "joi"
 
 /** create validation schema */
 let schema = Joi.object({
-    panjang: Joi.number().required().min(1), 
-    lebar: Joi.number().required().min(1),
+    p: Joi.number().required().min(1), 
+    l: Joi.number().required().min(1),
 })
 
 /** create validation function */

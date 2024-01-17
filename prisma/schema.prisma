@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL2")
+}
+
+model Kopi {
+  idmenu    Int      @id @default(autoincrement())
+  nama      String   @default("")
+  code      String   @default("")
+  variant   String   @default("")
+  harga     Int      @default(0)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Konser {
+  eventId   Int       @id @default(autoincrement())
+  eventname String    @default("")
+  eventdate DateTime  @default(now())
+  venue     String    @default("")
+  price     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  seats     seats[]
+  tickets   tickets[]
+}
+
+model seats {
+  seatId        Int       @id @default(autoincrement())
+  eventId       Int       @default(0)
+  rowNum        String    @default("")
+  seatNum       String    @default("")
+  status        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  event_details Konser    @relation(fields: [eventId], references: [eventId])
+  tickets       tickets[]
+}
+
+model users {
+  userId    Int       @id @default(autoincrement())
+  firstname String    @default("")
+  lastname  String    @default("")
+  email     String    @default("")
+  password  String    @default("")
+  role      Role      @default(users)
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  tickets   tickets[]
+}
+
+enum Role {
+  users
+  admin
+}
+
+model tickets {
+  ticketId      Int      @id @default(autoincrement())
+  eventId       Int      @default(0)
+  userId        Int      @default(0)
+  seatid        Int      @default(0)
+  bookedDate    DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updateAt      DateTime @updatedAt
+  event_details Konser   @relation(fields: [eventId], references: [eventId])
+  seat_details  seats    @relation(fields: [seatid], references: [seatId])
+  user_details  users    @relation(fields: [userId], references: [userId])
+}

@@ -1,0 +1,64 @@
+-- CreateTable
+CREATE TABLE `Konser` (
+    `evenId` INTEGER NOT NULL AUTO_INCREMENT,
+    `evenname` VARCHAR(191) NOT NULL DEFAULT '',
+    `evendate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `venue` VARCHAR(191) NOT NULL DEFAULT '',
+    `price` INTEGER NOT NULL DEFAULT 0,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`evenId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `seats` (
+    `seatId` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER NOT NULL DEFAULT 0,
+    `rowNum` VARCHAR(191) NOT NULL DEFAULT '',
+    `seatNum` VARCHAR(191) NOT NULL DEFAULT '',
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`seatId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `users` (
+    `userId` INTEGER NOT NULL AUTO_INCREMENT,
+    `firstname` VARCHAR(191) NOT NULL DEFAULT '',
+    `lastname` VARCHAR(191) NOT NULL DEFAULT '',
+    `email` VARCHAR(191) NOT NULL DEFAULT '',
+    `password` VARCHAR(191) NOT NULL DEFAULT '',
+    `role` ENUM('users', 'admin') NOT NULL DEFAULT 'users',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`userId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `tickets` (
+    `ticketId` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER NOT NULL DEFAULT 0,
+    `userId` INTEGER NOT NULL DEFAULT 0,
+    `seatid` INTEGER NOT NULL DEFAULT 0,
+    `bookedDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`ticketId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `seats` ADD CONSTRAINT `seats_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `Konser`(`evenId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `tickets` ADD CONSTRAINT `tickets_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `Konser`(`evenId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `tickets` ADD CONSTRAINT `tickets_seatid_fkey` FOREIGN KEY (`seatid`) REFERENCES `seats`(`seatId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `tickets` ADD CONSTRAINT `tickets_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE;

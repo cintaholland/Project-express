@@ -4,7 +4,7 @@ import Joi from "joi"
 /** create validation schema */
 let schema = Joi.object({
     r: Joi.number().required().min(1), 
-    tinggi: Joi.number().required().min(1)
+    t: Joi.number().required().min(1)
 })
 
 /** create validation function */
